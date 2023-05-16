@@ -5,6 +5,7 @@ interface IUser {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
     //Methods that all users have in common are create/signUp(), login(), updateProfile(), deleteProfile()
     signUp: () => void;
     login: () => void;
@@ -19,6 +20,7 @@ interface ITenants {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
 
     //Additional fields for the tenants that are unique from the user
     location: string;
@@ -45,9 +47,10 @@ interface ILandlord {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
     //Unique Landlord's field
     propertyName: string;
-    propertyType : string;
+    propertyType : [];
     propertPrice : number;
     propertyDescription: string;
     propertyLocation : string;
@@ -69,13 +72,15 @@ export class User implements IUser {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
     //The constructor object
-    constructor(name: string, email: string, password: string, avater: File, phoneNumber: number) {
+    constructor(name: string, email: string, password: string, avater: File, phoneNumber: number, user : string) {
         this.name = name,
             this.email = email,
             this.password = password,
             this.avater = avater,
-            this.phoneNumber = phoneNumber
+            this.phoneNumber = phoneNumber,
+            this.user = user
     }
     //Default methods for all users
     signUp(): void {
@@ -100,6 +105,7 @@ export class Teanants extends User implements ITenants {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
     //Additional unique fields
     propertyID : number|string;
     location: string;
@@ -109,9 +115,9 @@ export class Teanants extends User implements ITenants {
     //The constructor object
     constructor (name: string, email: string, password: string, avater: File, location: string, 
         propertyDescription: string, phoneNumber: number, propertyOwner: string, tokenNumber : number, 
-        propertyID : number|string) {
+        propertyID : number|string, user : string) {
             //Inherited fields fron the User class
-            super(name, email, password,avater, phoneNumber),
+            super(name, email, password,avater, phoneNumber, user),
             //Additional unique fields
             this.location = location,
             this.tokenNumber = tokenNumber,
@@ -143,17 +149,19 @@ export class Landlord extends User implements ILandlord {
     password: string;
     avater: File;
     phoneNumber: number;
+    user : string;
     //Additional unique fields
     propertyName: string;
-    propertyType : string;
+    propertyType : [];
     propertPrice : number;
     propertyDescription: string;
     propertyLocation : string;
     //The constructor object
     constructor(name: string, email: string, password: string, avater: File, phoneNumber: number,
-        propertyName: string, propertyType : string, propertPrice : number, propertyDescription: string, propertyLocation : string) {
+        propertyName: string, propertyType : [], propertPrice : number, propertyDescription: string, 
+        propertyLocation : string, user : string) {
             //Inherited fields fron the User class
-            super(name, email, password, avater, phoneNumber),
+            super(name, email, password, avater, phoneNumber, user),
             //Additional unique fields
             this.propertyName = propertyName,
             this.propertyType = propertyType,
