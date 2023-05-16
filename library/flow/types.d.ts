@@ -1,3 +1,4 @@
+//Define the interface for Field
 export interface Field {
     type: InputType;
     label: string;
@@ -8,12 +9,14 @@ export interface Field {
     options?: Option;
   }
   
+  //Define types for Option
   export type Option = {
     tableName: string;
     fields: string[];
     values: [];
   };
   
+  //Define types for Select
   export type Select = {
     tableName: string;
   };
@@ -28,6 +31,8 @@ export interface Field {
     | 'select'
     | 'file';
   
+
+    //Define types for Step
   export type Step = {
     title: string;
     tableName: string;
@@ -36,9 +41,13 @@ export interface Field {
     fields: Field[];
     definations: Defination[];
   };
-  
+
+  //Define intarface Flow
   export interface Flow {
     steps: Step[];
   }
 
+  //Define types for Defination[]
   export type Defination = {label : string, value : string}
+
+  
