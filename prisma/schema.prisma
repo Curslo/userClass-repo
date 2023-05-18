@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Create a model to record landlord's Bank acc details and payment methods
 model accounts {
   accounts                             Int      @id @default(autoincrement())
   landlord                             Int      @unique(map: "landlord")
@@ -17,6 +18,7 @@ model accounts {
   landlord_accounts_landlordTolandlord landlord @relation("accounts_landlordTolandlord", fields: [landlord], references: [landlord], onDelete: NoAction, onUpdate: NoAction, map: "accounts_ibfk_1")
 }
 
+//
 model accumulator {
   accumulator                          Int     @id @default(autoincrement())
   loan                                 Int     @unique(map: "loan")
@@ -27,6 +29,7 @@ model accumulator {
   invoice_accumulator_invoiceToinvoice invoice @relation("accumulator_invoiceToinvoice", fields: [invoice], references: [invoice], onDelete: NoAction, onUpdate: NoAction, map: "accumulator_ibfk_3")
 }
 
+//Create an Agent model that defines an indivudual Agent
 model agent {
   agent                          Int       @id @default(autoincrement())
   username                       String    @unique(map: "username") @db.VarChar(200)
@@ -36,6 +39,7 @@ model agent {
   user                           user      @relation(fields: [userId], references: [id])
   property_property_agentToagent property? @relation("property_agentToagent")
 }
+
 
 model agreement {
   agreement                       Int       @id @default(autoincrement())
@@ -57,6 +61,7 @@ model agreement {
   @@index([room], map: "room")
 }
 
+//
 model balance_initial {
   balance_initial                          Int       @id @default(autoincrement())
   client                                   Int
@@ -75,6 +80,8 @@ model balance_initial {
   @@index([invoice], map: "invoice")
 }
 
+
+//Does this mean the houses that are used for businesses by cliesnts
 model business {
   business          Int     @id @default(autoincrement())
   name              String  @unique(map: "identification13") @db.VarChar(255)
@@ -85,6 +92,7 @@ model business {
   is_current        Int
 }
 
+//Create a Caretaker model
 model caretaker {
   caretaker Int     @id @default(autoincrement())
   username  String  @unique(map: "username") @db.VarChar(200)
@@ -92,6 +100,7 @@ model caretaker {
   title     String? @db.VarChar(100)
 }
 
+//
 model changes {
   pk        Int               @unique(map: "id")
   source    String            @db.Text
@@ -99,6 +108,7 @@ model changes {
   datetime  DateTime          @db.DateTime(0)
 }
 
+//Does this mean the services that a tenant has recieved are charged using this model
 model charge {
   charge                          Int     @id @default(autoincrement())
   service                         Int
@@ -114,6 +124,7 @@ model charge {
   @@index([service], map: "service")
 }
 
+//Create a Tenant model / Client model
 model client {
   client                                         Int               @id @default(autoincrement())
   name                                           String            @unique(map: "id5") @db.VarChar(255)
@@ -136,6 +147,7 @@ model client {
   subscription_subscription_clientToclient       subscription[]    @relation("subscription_clientToclient")
 }
 
+//
 model closing_balance {
   closing_balance                          Int     @id @default(autoincrement())
   invoice                                  Int     @unique(map: "id6")
@@ -144,6 +156,7 @@ model closing_balance {
   invoice_closing_balance_invoiceToinvoice invoice @relation("closing_balance_invoiceToinvoice", fields: [invoice], references: [invoice], onDelete: NoAction, onUpdate: NoAction, map: "closing_balance_ibfk_1")
 }
 
+// Create Client/Tenant communication model
 model communications {
   communications                       Int    @id
   client                               Int
@@ -153,6 +166,7 @@ model communications {
   @@index([client], map: "client")
 }
 
+//The amount charged will be taken at a later date
 model credit {
   credit                          Int      @id @default(autoincrement())
   client                          Int
@@ -167,6 +181,7 @@ model credit {
   @@index([invoice], map: "invoice")
 }
 
+//The amount charged will be taken instantly
 model debit {
   debit                          Int      @id @default(autoincrement())
   client                         Int
@@ -181,6 +196,7 @@ model debit {
   @@index([invoice], map: "invoice")
 }
 
+//Create an EAccount model that will control all the other bills altogether
 model eaccount {
   eaccount                                   Int           @id @default(autoincrement())
   num                                        String        @unique(map: "id9") @db.VarChar(255)
@@ -193,6 +209,7 @@ model eaccount {
   elink_elink_eaccountToeaccount             elink[]       @relation("elink_eaccountToeaccount")
 }
 
+//Create an Ebill model for handling bills 
 model ebill {
   ebill                             Int      @id @default(autoincrement())
   msg                               Int?
@@ -227,6 +244,7 @@ model econnection {
   @@index([room], map: "room")
 }
 
+//Create an Electricity model for handling electric bills
 model electricity {
   electricity                             Int       @id @default(autoincrement())
   eaccount                                Int
@@ -284,6 +302,7 @@ model ereading {
   @@index([invoice], map: "invoice")
 }
 
+//Create an Invoice model for Client reminders on bills and rent
 model invoice {
   invoice                                          Int               @id @default(autoincrement())
   client                                           Int
@@ -318,6 +337,7 @@ model job {
   sql    String? @db.VarChar(255)
 }
 
+//Create a landlord model for handling all landlords
 model landlord {
   landlord                             Int       @id @default(autoincrement())
   name                                 String?   @db.VarChar(100)
@@ -367,6 +387,7 @@ model note {
   invoice_note_invoiceToinvoice invoice @relation("note_invoiceToinvoice", fields: [invoice], references: [invoice], onDelete: NoAction, onUpdate: NoAction, map: "note_ibfk_1")
 }
 
+//Create a payment model for handling all client payments
 model payment {
   payment                          Int      @id @default(autoincrement())
   client                           Int
@@ -394,7 +415,7 @@ model period {
 
   @@unique([year, month], map: "identification22")
 }
-
+//Are these room pictures to show to clients? - yes
 model picture {
   picture                 Int     @id @default(autoincrement())
   room                    Int
@@ -405,6 +426,8 @@ model picture {
   @@unique([room, name], map: "identification23")
 }
 
+
+//Create a property model to handle all landlords properties
 model property {
   property                             Int       @id @default(autoincrement())
   uid                                  String    @unique(map: "uid") @db.VarChar(200)
@@ -421,6 +444,7 @@ model property {
   @@index([uid], map: "property_ibfk_3")
 }
 
+//Create a rent model to save rent information after an invoice is created
 model rent {
   rent                                Int       @id @default(autoincrement())
   invoice                             Int
@@ -448,6 +472,7 @@ model repayment {
   loan_repayment_loanToloan          loan     @relation("repayment_loanToloan", fields: [loan], references: [loan], onDelete: NoAction, onUpdate: NoAction, map: "loan_fk")
 }
 
+//Create a role a role model to identify a specific user in the system
 model role {
   role        Int     @id @default(autoincrement())
   title       String  @unique
@@ -458,6 +483,7 @@ model role {
   @@index([user_id], map: "role_user_id_fkey")
 }
 
+//Create a room model to handle all rooms in a certain property
 model room {
   room                               Int           @id @default(autoincrement())
   uid                                String        @unique(map: "identification25") @db.VarChar(255)
@@ -473,6 +499,7 @@ model room {
   @@index([property_id], map: "property_ibfk_3")
 }
 
+//A service is provided by a propert eg Garbage collection
 model service {
   service                                    Int            @id @default(autoincrement())
   name                                       String         @unique(map: "id26") @db.VarChar(255)
@@ -487,6 +514,7 @@ model service {
   @@index([property_id], map: "service_property_id_fkey")
 }
 
+//Services that a landlord is offering that a user can subscribe to
 model subscription {
   subscription                          Int     @id @default(autoincrement())
   client                                Int
@@ -499,6 +527,7 @@ model subscription {
   @@index([service], map: "service")
 }
 
+//Create a user model to handle all users
 model user {
   id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(45)
@@ -511,12 +540,8 @@ model user {
   role      role[]
 }
 
-model user_type {
-  user_type   Int     @id @default(autoincrement())
-  name        String  @unique
-  description String?
-}
 
+//Create a water model to handle water needs
 model water {
   water                                      Int         @id @default(autoincrement())
   wconnection                                Int
@@ -536,6 +561,7 @@ model water {
   @@index([invoice], map: "invoice")
 }
 
+//Create water model to handle water connection
 model wconnection {
   wconnection                          Int       @id @default(autoincrement())
   room                                 Int
@@ -554,6 +580,7 @@ model wconnection {
   @@index([wmeter], map: "wmeter")
 }
 
+//Create water meter model to handle the water meter
 model wmeter {
   wmeter                                 Int           @id @default(autoincrement())
   serial_no                              String        @unique(map: "id30") @db.VarChar(255)
